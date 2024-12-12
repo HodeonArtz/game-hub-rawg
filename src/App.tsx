@@ -12,7 +12,7 @@ function App() {
         Nav
       </GridItem>
 
-      <GridItem area="aside" bg="gold" hideBelow="lg" hide>
+      <GridItem area="aside" bg="gold" hideBelow="lg">
         Aside
       </GridItem>
 

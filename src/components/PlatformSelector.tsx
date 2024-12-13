@@ -8,11 +8,22 @@ import {
   MenuRoot,
   MenuTrigger,
 } from "./ui/menu";
+import { Skeleton } from "@chakra-ui/react";
 
 const PlatformSelector = () => {
-  const { data, error } = usePlatforms();
+  const { data, error, isLoading } = usePlatforms();
 
   if (error) return null;
+
+  if (isLoading) {
+    return (
+      <MenuRoot>
+        <MenuTrigger asChild>
+          <Skeleton width="120px" height="40px" />
+        </MenuTrigger>
+      </MenuRoot>
+    );
+  }
   return (
     <MenuRoot positioning={{ placement: "bottom-start" }}>
       <MenuTrigger asChild>

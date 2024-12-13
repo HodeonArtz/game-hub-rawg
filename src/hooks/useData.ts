@@ -10,6 +10,7 @@ export interface FetchResponse<T> {
 export default function useData<T>(
   endpoint: string,
   requestConfig?: AxiosRequestConfig,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dependencies?: any[]
 ) {
   const [data, setData] = useState<T[]>([]),
@@ -38,6 +39,7 @@ export default function useData<T>(
 
       return () => controller.abort();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     dependencies ? [...dependencies] : []
   );
   return { data, error, isLoading };

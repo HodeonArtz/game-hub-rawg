@@ -9,8 +9,14 @@ import {
   MenuTrigger,
 } from "./ui/menu";
 import { Skeleton } from "@chakra-ui/react";
+import { Platform } from "@/hooks/useGames";
 
-const PlatformSelector = () => {
+interface Props {
+  selectedPlatform: Platform | null;
+  onSelectPlatform: (platform: Platform | null) => void;
+}
+
+const PlatformSelector = ({ selectedPlatform, onSelectPlatform }: Props) => {
   const { data, error, isLoading } = usePlatforms();
 
   if (error) return null;
@@ -28,13 +34,22 @@ const PlatformSelector = () => {
     <MenuRoot positioning={{ placement: "bottom-start" }}>
       <MenuTrigger asChild>
         <Button>
-          Platforms <BsChevronDown />
+          {selectedPlatform?.name || "Platforms"} <BsChevronDown />
         </Button>
       </MenuTrigger>
       <MenuContent width="fit-content">
-        <MenuRadioItemGroup>
+        <MenuRadioItemGroup value={selectedPlatform?.slug}>
           {data.map((platform) => (
-            <MenuRadioItem value={platform.slug}>{platform.name}</MenuRadioItem>
+            <MenuRadioItem
+              value={platform.slug}
+              onClick={() =>
+                onSelectPlatform(
+                  platform === selectedPlatform ? null : platform
+                )
+              }
+            >
+              {platform.name}
+            </MenuRadioItem>
           ))}
         </MenuRadioItemGroup>
       </MenuContent>

@@ -10,22 +10,43 @@ import {
 } from "./ui/menu";
 import { Button } from "./ui/button";
 
-const SortSelector = () => {
+interface Props {
+  sortOrder: string;
+  onSelectSortOrder: (sortOrder: string) => void;
+}
+
+const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
+  const sortOrders = [
+    { value: "", label: "Relevance" },
+    { value: "-added", label: "Date added" },
+    { value: "name", label: "Name" },
+    { value: "-released", label: "Release date" },
+    { value: "-metacritic", label: "Popularity" },
+    { value: "-rating", label: "Average rating" },
+  ];
+
+  const currentSortOrder = sortOrders.find(
+    (order) => order.value === sortOrder
+  );
+
   return (
     <MenuRoot positioning={{ placement: "bottom-start" }}>
       <MenuTrigger asChild>
         <Button>
-          Order by: Relevance <BsChevronDown />
+          Order by: {currentSortOrder?.label || "Relevance"} <BsChevronDown />
         </Button>
       </MenuTrigger>
       <MenuContent width="fit-content">
-        <MenuRadioItemGroup>
-          <MenuRadioItem value="relevance">Relevance</MenuRadioItem>
-          <MenuRadioItem value="date-added">Date added</MenuRadioItem>
-          <MenuRadioItem value="name">Name</MenuRadioItem>
-          <MenuRadioItem value="release-date">Release date</MenuRadioItem>
-          <MenuRadioItem value="popularity">Popularity</MenuRadioItem>
-          <MenuRadioItem value="average">Average</MenuRadioItem>
+        <MenuRadioItemGroup value={currentSortOrder?.value || ""}>
+          {sortOrders.map((order) => (
+            <MenuRadioItem
+              value={order.value}
+              key={order.value}
+              onClick={() => onSelectSortOrder(order.value)}
+            >
+              {order.label}
+            </MenuRadioItem>
+          ))}
         </MenuRadioItemGroup>
       </MenuContent>
     </MenuRoot>

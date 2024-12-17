@@ -9,15 +9,12 @@ import {
   MenuTrigger,
 } from "./ui/menu";
 import { Skeleton } from "@chakra-ui/react";
-import { Platform } from "@/hooks/useGames";
+import useGameQueryStore from "@/store";
 
-interface Props {
-  selectedPlatform: Platform | null;
-  onSelectPlatform: (platform: Platform | null) => void;
-}
-
-const PlatformSelector = ({ selectedPlatform, onSelectPlatform }: Props) => {
+const PlatformSelector = () => {
   const { data, error, isLoading } = usePlatforms();
+  const selectedPlatform = useGameQueryStore((s) => s.gameQuery.platform);
+  const filterPlatform = useGameQueryStore((s) => s.filterPlatform);
 
   if (error) return null;
 
@@ -43,9 +40,7 @@ const PlatformSelector = ({ selectedPlatform, onSelectPlatform }: Props) => {
             <MenuRadioItem
               value={platform.slug}
               onClick={() =>
-                onSelectPlatform(
-                  platform === selectedPlatform ? null : platform
-                )
+                filterPlatform(platform === selectedPlatform ? null : platform)
               }
             >
               {platform.name}

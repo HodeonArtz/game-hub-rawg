@@ -9,13 +9,9 @@ import {
   MenuTrigger,
 } from "./ui/menu";
 import { Button } from "./ui/button";
+import useGameQueryStore from "@/store";
 
-interface Props {
-  sortOrder: string;
-  onSelectSortOrder: (sortOrder: string) => void;
-}
-
-const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
+const SortSelector = () => {
   const sortOrders = [
     { value: "", label: "Relevance" },
     { value: "-added", label: "Date added" },
@@ -24,6 +20,9 @@ const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
     { value: "-metacritic", label: "Popularity" },
     { value: "-rating", label: "Average rating" },
   ];
+
+  const sortOrder = useGameQueryStore((s) => s.gameQuery.sortOrder);
+  const sortBy = useGameQueryStore((s) => s.sortBy);
 
   const currentSortOrder = sortOrders.find(
     (order) => order.value === sortOrder
@@ -42,7 +41,7 @@ const SortSelector = ({ onSelectSortOrder, sortOrder }: Props) => {
             <MenuRadioItem
               value={order.value}
               key={order.value}
-              onClick={() => onSelectSortOrder(order.value)}
+              onClick={() => sortBy(order.value)}
             >
               {order.label}
             </MenuRadioItem>
